@@ -23,8 +23,8 @@ function LoginForm() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      loginEmail: data.get('loginEmail'),
+      loginPassword: data.get('loginPassword'),
     });
   };
 
@@ -66,9 +66,9 @@ function LoginForm() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
+                id="loginEmail"
                 label="Email Address"
-                name="email"
+                name="loginEmail"
                 autoComplete="email"
                 autoFocus
               />
@@ -76,10 +76,10 @@ function LoginForm() {
                 margin="normal"
                 required
                 fullWidth
-                name="password"
+                name="loginPassword"
                 label="Password"
                 type="password"
-                id="password"
+                id="loginPassword"
                 autoComplete="current-password"
               />
               <FormControlLabel
@@ -96,9 +96,9 @@ function LoginForm() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  {/* <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link> */}
+                  <Link href="#" variant="body2">
+                    Go to home
+                  </Link>
                 </Grid>
                 <Grid item>
                   <Link href="#" variant="body2">

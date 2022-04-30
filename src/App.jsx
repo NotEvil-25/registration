@@ -1,12 +1,16 @@
 import React from 'react';
-// import Login from './pages/login';
+import Login from './pages/login';
 import Registration from './pages/registration';
+import ResetPass from './pages/resetpass';
+import Home from './pages/home';
 
 function App() {
   return (
     <div className="App">
-      {/* <Login /> */}
+      <Login />
       <Registration />
+      <ResetPass />
+      <Home />
     </div>
   );
 }
