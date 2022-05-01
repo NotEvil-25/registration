@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link as LinkTo } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -90,7 +91,7 @@ function ResetPassword() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" component={LinkTo} to="/">
                   Go to home
                 </Link>
               </Grid>

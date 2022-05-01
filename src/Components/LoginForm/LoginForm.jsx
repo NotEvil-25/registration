@@ -15,6 +15,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link as LinkTo } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -96,13 +97,13 @@ function LoginForm() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="#" variant="body2" component={LinkTo} to="/">
                     Go to home
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    Don't have an account? Sign Up
+                  <Link href="#" variant="body2" component={LinkTo} to="/resetpass">
+                    Forgot the password?
                   </Link>
                 </Grid>
               </Grid>

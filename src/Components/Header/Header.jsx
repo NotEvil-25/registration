@@ -2,6 +2,7 @@ import React from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 
 function Header() {
   return (
@@ -15,10 +16,10 @@ function Header() {
       >
         Blog
       </Typography>
-      <Button variant="outlined" size="small">
+      <Button variant="outlined" size="small" component={Link} to="/login">
         Log in
       </Button>
-      <Button variant="outlined" size="small" sx={{ marginLeft: 1 }}>
+      <Button variant="outlined" size="small" sx={{ marginLeft: 1 }} component={Link} to="/registration">
         Registration
       </Button>
     </Toolbar>
