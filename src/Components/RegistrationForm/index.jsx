@@ -13,18 +13,23 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as LinkTo } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { regNewUser } from '../../store/slices/sessionSlice';
 
 const theme = createTheme();
 
 function RegistrationForm() {
+  const dispatch = useDispatch();
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      confirmedPassword: data.get('confirmedPassword'),
-    });
+    const input = new FormData(event.currentTarget);
+    const data = {
+      email: input.get('email'),
+      password: input.get('password'),
+      confirmedPassword: input.get('confirmedPassword'),
+    };
+    dispatch(regNewUser(data));
   };
 
   return (
