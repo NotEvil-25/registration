@@ -36,8 +36,11 @@ const sessionSlice = createSlice({
     },
   },
   extraReducers: {
-    [regNewUser.fulfilled]: () => {
+    [regNewUser.fulfilled]: (state) => {
       console.log('Registration is sucssess');
+      state.inputsValues.registration.email = '';
+      state.inputsValues.registration.password = '';
+      state.inputsValues.registration.confirmedPassword = '';
     },
   },
 });
