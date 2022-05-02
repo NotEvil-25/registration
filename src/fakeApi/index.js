@@ -3,8 +3,7 @@ const fakeApi = {
   registration(data) {
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log(data);
-        resolve();
+        resolve(data);
       }, 1000);
     });
   },

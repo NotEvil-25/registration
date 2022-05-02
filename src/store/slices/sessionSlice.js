@@ -7,7 +7,13 @@ import fakeApi from '../../fakeApi';
 const initialState = {
   isAuth: false,
   users: [], // {id, email, password}
-  messages: {},
+  inputsValues: {
+    registration: {
+      email: '',
+      password: '',
+      confirmedPassword: '',
+    },
+  },
 };
 
 export const regNewUser = createAsyncThunk(
@@ -25,18 +31,26 @@ const sessionSlice = createSlice({
     registration: (state, action) => {
       state.users.push(action.payload);
     },
+    registrationValues: (state, action) => {
+      state.inputsValues.registration = action.payload;
+    },
   },
   extraReducers: {
-    [regNewUser.fulfilled]: (state) => {
-      state.isAuth = true;
+    [regNewUser.fulfilled]: () => {
+      console.log('Registration is sucssess');
     },
   },
 });
 
 // actions
-export const { registration } = sessionSlice.actions;
+export const {
+  registration,
+  registrationValues,
+} = sessionSlice.actions;
 
 // selectors
+export const selectUsers = (state) => state.users;
+export const selectRegistrationVals = (state) => state.inputsValues.registration;
 
 // main reducer
 export default sessionSlice.reducer;

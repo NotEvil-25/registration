@@ -13,23 +13,44 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as LinkTo } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { regNewUser } from '../../store/slices/sessionSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  regNewUser, registrationValues, selectUsers, selectRegistrationVals,
+} from '../../store/slices/sessionSlice';
 
 const theme = createTheme();
 
 function RegistrationForm() {
   const dispatch = useDispatch();
+  const users = useSelector(selectUsers);
+  const value = useSelector(selectRegistrationVals);
+  const savedValue = {
+    email: value.email,
+    password: value.password,
+    confirmedPassword: value.confirmedPassword,
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const input = new FormData(event.currentTarget);
     const data = {
+      id: users.length + 1,
       email: input.get('email'),
       password: input.get('password'),
       confirmedPassword: input.get('confirmedPassword'),
     };
     dispatch(regNewUser(data));
+  };
+
+  const saveValueInput = () => {
+    const registrationForm = document.forms.registration;
+    const input = new FormData(registrationForm);
+    const data = {
+      email: input.get('email'),
+      password: input.get('password'),
+      confirmedPassword: input.get('confirmedPassword'),
+    };
+    dispatch(registrationValues(data));
   };
 
   return (
@@ -50,7 +71,7 @@ function RegistrationForm() {
           <Typography component="h1" variant="h5">
             Registration
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" name="registration" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -60,6 +81,8 @@ function RegistrationForm() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={saveValueInput}
+                  value={savedValue.email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -71,6 +94,8 @@ function RegistrationForm() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={saveValueInput}
+                  value={savedValue.password}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -82,6 +107,8 @@ function RegistrationForm() {
                   type="password"
                   id="confirmedPassword"
                   autoComplete="new-password"
+                  onChange={saveValueInput}
+                  value={savedValue.confirmedPassword}
                 />
               </Grid>
             </Grid>
