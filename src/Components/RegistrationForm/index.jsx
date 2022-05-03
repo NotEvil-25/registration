@@ -37,7 +37,6 @@ function RegistrationForm() {
       id: users.length + 1,
       email: input.get('email'),
       password: input.get('password'),
-      confirmedPassword: input.get('confirmedPassword'),
     };
     dispatch(regNewUser(data));
   };

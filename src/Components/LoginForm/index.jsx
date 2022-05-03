@@ -6,8 +6,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -16,17 +14,22 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as LinkTo } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../store/slices/sessionSlice';
 
 const theme = createTheme();
 
 function LoginForm() {
+  const dispatch = useDispatch();
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      loginEmail: data.get('loginEmail'),
-      loginPassword: data.get('loginPassword'),
-    });
+    const form = new FormData(event.currentTarget);
+    const data = {
+      email: form.get('loginEmail'),
+      password: form.get('loginPassword'),
+    };
+    dispatch(loginUser(data));
   };
 
   return (
@@ -71,7 +74,6 @@ function LoginForm() {
                 label="Email Address"
                 name="loginEmail"
                 autoComplete="email"
-                autoFocus
               />
               <TextField
                 margin="normal"
@@ -82,10 +84,6 @@ function LoginForm() {
                 type="password"
                 id="loginPassword"
                 autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
               />
               <Button
                 type="submit"
@@ -99,11 +97,6 @@ function LoginForm() {
                 <Grid item xs>
                   <Link href="#" variant="body2" component={LinkTo} to="/">
                     Go to home
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2" component={LinkTo} to="/resetpass">
-                    Forgot the password?
                   </Link>
                 </Grid>
               </Grid>

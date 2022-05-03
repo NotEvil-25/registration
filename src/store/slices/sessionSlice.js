@@ -5,8 +5,22 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import fakeApi from '../../fakeApi';
 
 const initialState = {
-  isAuth: false,
-  users: [], // {id, email, password}
+  auth: {
+    isAuth: false,
+    yourUserId: null,
+  },
+  users: [
+    {
+      id: 1,
+      email: 'e1',
+      password: 'p1',
+    },
+    {
+      id: 2,
+      email: 'email2',
+      password: 'password2',
+    },
+  ], // {id, email, password}
   inputsValues: {
     registration: {
       email: '',
@@ -21,6 +35,16 @@ export const regNewUser = createAsyncThunk(
   async (data, { dispatch }) => {
     const response = await fakeApi.registration(data);
     dispatch(registration(response));
+  },
+);
+
+export const loginUser = createAsyncThunk(
+  'session/loginUser',
+  async (data, { getState }) => {
+    const state = getState();
+    const { users } = state;
+    const response = await fakeApi.login(data, users);
+    return response;
   },
 );
 
@@ -41,6 +65,14 @@ const sessionSlice = createSlice({
       state.inputsValues.registration.email = '';
       state.inputsValues.registration.password = '';
       state.inputsValues.registration.confirmedPassword = '';
+    },
+    [loginUser.fulfilled]: (state, action) => {
+      console.log('login is sucssess\nuser id is', action.payload);
+      state.auth.isAuth = true;
+      state.auth.yourUserId = action.payload;
+    },
+    [loginUser.rejected]: () => {
+      console.log('user not found');
     },
   },
 });
