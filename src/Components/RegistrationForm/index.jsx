@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as LinkTo } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  regNewUser, registrationValues, selectUsers, selectRegistrationVals,
+  regNewUser, registrationValues, selectUsers, selectRegistrationVals, selectRegistrationHelpers,
 } from '../../store/slices/sessionSlice';
 
 const theme = createTheme();
@@ -24,6 +24,15 @@ function RegistrationForm() {
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
   const value = useSelector(selectRegistrationVals);
+  const registrationHelper = useSelector(selectRegistrationHelpers);
+
+  const email = {
+    error: registrationHelper.emailInput.isError,
+    helperText: registrationHelper.emailInput.helperText,
+  };
+
+  // console.log(email);
+
   const savedValue = {
     email: value.email,
     password: value.password,
@@ -52,6 +61,10 @@ function RegistrationForm() {
     dispatch(registrationValues(data));
   };
 
+  // useEffect(() => {
+
+  // }, [email]);
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -74,6 +87,8 @@ function RegistrationForm() {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  error={email.error}
+                  helperText={email.helperText}
                   required
                   fullWidth
                   id="email"

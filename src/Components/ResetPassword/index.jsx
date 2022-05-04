@@ -13,10 +13,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as LinkTo } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetPassword } from '../../store/slices/sessionSlice';
 
 const theme = createTheme();
 
 function ResetPassword() {
+  const dispatch = useDispatch();
+  // const auth = useSelector(selectAuth);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -25,6 +30,8 @@ function ResetPassword() {
       newPassword: data.get('newPassword'),
       repeatedPassword: data.get('repeatedPassword'),
     });
+    const newPassword = data.get('newPassword');
+    dispatch(resetPassword(newPassword));
   };
 
   return (
