@@ -13,7 +13,7 @@ const fakeApi = {
     });
   },
   login(data, users) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         const currentUser = users.find((user) => (
           (data.email === user.email) && (data.password === user.password)
@@ -24,20 +24,33 @@ const fakeApi = {
             userEmail: currentUser.email,
           });
         } else {
-          reject();
+          resolve({ incorrectInput: true });
         }
       }, 1000);
     });
   },
-  resetPassword(newPassword, currentUserId, users) {
-    return new Promise((resolve, reject) => {
+  resetPassword(password, currentUserId, users) {
+    return new Promise((resolve) => {
       setTimeout(() => {
         const currentUser = users.find((user) => user.id === currentUserId);
-        if (newPassword === currentUser.password) {
-          reject(new Error('New password is the same as old password'));
+        if (password.old !== currentUser.password) {
+          const err = {
+            typeErr: 'OLD_PASSWORD',
+            message: 'Old password is wrong',
+          };
+          resolve(err);
+          return;
+        }
+        if (password.new === currentUser.password) {
+          const err = {
+            typeErr: 'NEW_PASSWORD',
+            message: 'New password is the same as old password',
+          };
+          resolve(err);
+          return;
         }
         const updatedUser = { ...currentUser };
-        updatedUser.password = newPassword;
+        updatedUser.password = password.new;
         resolve(updatedUser);
       }, 1000);
     });

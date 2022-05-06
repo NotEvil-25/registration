@@ -51,18 +51,32 @@ function Header() {
   };
 
   return (
-    <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
-      <Typography
-        component="h2"
-        variant="h5"
-        color="inherit"
-        noWrap
-        sx={{ flex: 1 }}
-      >
-        Blog
-      </Typography>
-      { buttons() }
-    </Toolbar>
+    <>
+      <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Typography
+          component="h2"
+          variant="h5"
+          color="inherit"
+          noWrap
+          sx={{ flex: 1 }}
+        >
+          Blog
+        </Typography>
+        { buttons() }
+      </Toolbar>
+      <div>
+        <p>
+          email:
+          {' '}
+          <strong>email@test.com</strong>
+        </p>
+        <p>
+          password:
+          {' '}
+          <strong>Password1</strong>
+        </p>
+      </div>
+    </>
   );
 }
 
