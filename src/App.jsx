@@ -8,7 +8,7 @@ import {
 import Registration from './pages/registration';
 // import ResetPass from './pages/resetpass';
 import Home from './pages/home';
-import ForGuests from './helpers/Components/ForGuests';
+// import ForGuests from './helpers/Components/ForGuests';
 
 function App() {
   return (
@@ -16,11 +16,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route
         path="/registration"
-        element={(
-          <ForGuests>
-            <Registration />
-          </ForGuests>
-        )}
+        element={(<Registration />)}
       />
       {/* <Route
         path="/login"
