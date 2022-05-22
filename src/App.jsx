@@ -4,11 +4,10 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-import Login from './pages/login';
+// import Login from './pages/login';
 import Registration from './pages/registration';
-import ResetPass from './pages/resetpass';
+// import ResetPass from './pages/resetpass';
 import Home from './pages/home';
-import RequireAuth from './helpers/Components/RequireAuth';
 import ForGuests from './helpers/Components/ForGuests';
 
 function App() {
@@ -23,7 +22,7 @@ function App() {
           </ForGuests>
         )}
       />
-      <Route
+      {/* <Route
         path="/login"
         element={(
           <ForGuests>
@@ -38,7 +37,7 @@ function App() {
             <ResetPass />
           </RequireAuth>
         )}
-      />
+      /> */}
     </Routes>
   );
 }
