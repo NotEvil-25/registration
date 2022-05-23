@@ -42,6 +42,8 @@ function Registration() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(emailNotice({ isError: false, text: '' }));
+    dispatch(passwordNotice({ isError: false, text: '' }));
     const { registration } = document.forms;
     const data = new FormData(registration);
     const email = data.get('email');

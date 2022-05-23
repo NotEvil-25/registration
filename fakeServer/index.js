@@ -13,25 +13,39 @@ server.use(jsonServer.bodyParser);
 server.post('/registration', (req, res) => {
   const { db } = req.app;
   const { password, email } = req.body;
-  console.log(req.body);
   const isSameMail = db.get('users').find({ email }).value();
 
   res.setHeader('Access-Control-Allow-Origin', '*');
   // ебаные условия какие то, нужно сократить
   if (isSameMail) {
-    return res.status(400).jsonp({ mailMessage: 'Email is already in use' });
+    return res.status(200).jsonp({
+      serverValidation: false,
+      message: 'Email is already exists',
+    });
   }
   if (!email) {
-    return res.status(400).jsonp({ mailMessage: 'Email is empty' });
+    return res.status(400).jsonp({
+      serverValidation: false,
+      message: 'Email is empty',
+    });
   }
   if (!email.match(constants.correctEmail)) {
-    return res.status(400).jsonp({ mailMessage: 'Incorrect email' });
+    return res.status(400).jsonp({
+      serverValidation: false,
+      message: 'Incorrect email',
+    });
   }
   if (!password) {
-    return res.status(400).jsonp({ passwordMessage: 'Password is empty' });
+    return res.status(400).jsonp({
+      serverValidation: false,
+      message: 'Password is empty',
+    });
   }
   if (!password.match(constants.correctPassword)) {
-    return res.status(400).jsonp({ passwordMessage: 'Incorrect password' });
+    return res.status(400).jsonp({
+      serverValidation: false,
+      message: 'Incorrec password',
+    });
   }
 
   const dbCopy = JSON.parse(JSON.stringify(db));
@@ -40,7 +54,10 @@ server.post('/registration', (req, res) => {
   req.body.id = userId;
 
   db.get('users').push(req.body).write();
-  return res.status(200).jsonp({ message: 'Registration is finished' });
+  return res.status(200).jsonp({
+    serverValidation: true,
+    message: 'Registration is successed',
+  });
 });
 
 server.post('/login', (req, res) => {

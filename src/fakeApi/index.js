@@ -17,11 +17,14 @@ const fakeApi = {
       },
       body: JSON.stringify(newUser),
     };
-    // искуственная задержка сервера
-    const data = await fetch(url, options).then((response) => new Promise((resolve) => {
-      setTimeout(() => { resolve(response); });
-    }, 1000));
-    return data;
+    // искуственная задержка c сервера
+    const data = await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(fetch(url, options));
+      }, 2000);
+    });
+    const response = await data.json();
+    return response;
   },
   // login(data, users) {
   //   return new Promise((resolve) => {

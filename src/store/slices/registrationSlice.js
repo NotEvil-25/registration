@@ -27,9 +27,13 @@ export const newUser = createAsyncThunk(
   'registration/newUser',
   async (data, { rejectWithValue, dispatch, getState }) => {
     const response = await fakeApi.registration(data);
-    const d = await response.json();
-    console.log(d);
-    console.log(response);
+
+    // если валидация на сервере не прошла
+    if (!response.serverValidation) {
+      return rejectWithValue(response.message);
+    }
+
+    return response.message;
   },
 );
 
@@ -47,7 +51,17 @@ const registrationSlice = createSlice({
       state.notices.password = action.payload;
     },
   },
-  extraReducers: {},
+  extraReducers: {
+    [newUser.pending]: () => {
+      console.log('newUser pending');
+    },
+    [newUser.fulfilled]: (_, action) => {
+      console.log('newUser fulfilled', action.payload);
+    },
+    [newUser.rejected]: (_, action) => {
+      console.log('newUser rejected', action.payload);
+    },
+  },
 });
 
 // actions
