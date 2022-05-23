@@ -1,3 +1,7 @@
+# How to start
+1) local ports 3000 and 3001 should be free
+2) 'npm run dev'
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
