@@ -14,11 +14,17 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as LinkTo } from 'react-router-dom';
 import Link from '@mui/material/Link';
+import LinearProgress from '@mui/material/LinearProgress';
+import Fade from '@mui/material/Fade';
+import Zoom from '@mui/material/Zoom';
+import Alert from '@mui/material/Alert';
 import {
   saveValues, selectValues,
   emailNotice, selectEmailNotice,
   passwordNotice, selectPasswordNotice,
   newUser,
+  selectSending,
+  alertSuccess, selectAlert, alertError,
 } from '../store/slices/registrationSlice';
 import { validataeEmail, validatePassword } from '../helpers/validation';
 
@@ -28,6 +34,8 @@ function Registration() {
   const value = useSelector(selectValues);
   const emailStatus = useSelector(selectEmailNotice);
   const passwordStatus = useSelector(selectPasswordNotice);
+  const isSending = useSelector(selectSending);
+  const alert = useSelector(selectAlert);
   const dispatch = useDispatch();
 
   const handleInputs = () => {
@@ -77,6 +85,18 @@ function Registration() {
     dispatch(newUser(user));
   };
 
+  if (alert.success) {
+    setTimeout(() => {
+      dispatch(alertSuccess());
+    }, 5000);
+  }
+
+  if (alert.error) {
+    setTimeout(() => {
+      dispatch(alertError());
+    }, 5000);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -99,12 +119,13 @@ function Registration() {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  disabled={isSending}
                   required
                   fullWidth
                   id="email"
                   label="Email Address"
                   name="email"
-                  autoComplete="email"
+                  autoComplete="off"
                   value={value.email}
                   error={emailStatus.isError}
                   helperText={emailStatus.text}
@@ -112,13 +133,14 @@ function Registration() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  disabled={isSending}
                   required
                   fullWidth
                   name="password"
                   label="Password"
                   type="password"
                   id="password"
-                  autoComplete="new-password"
+                  autoComplete="off"
                   value={value.password}
                   error={passwordStatus.isError}
                   helperText={passwordStatus.text}
@@ -137,6 +159,7 @@ function Registration() {
               </Grid> */}
             </Grid>
             <Button
+              disabled={isSending}
               type="submit"
               fullWidth
               variant="contained"
@@ -146,9 +169,39 @@ function Registration() {
             </Button>
           </Box>
         </Box>
-        <Link href="#" variant="body2" component={LinkTo} to="/">
-          Go to home
-        </Link>
+        {!isSending && (
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Fade in={!isSending}>
+                <Link href="#" variant="body2" component={LinkTo} to="/">
+                  Go to home
+                </Link>
+              </Fade>
+            </Grid>
+            <Grid item xs={6} textAlign="right">
+              <Fade in={!isSending}>
+                <Link href="#" variant="body2" component={LinkTo} to="/login">
+                  Or login?
+                </Link>
+              </Fade>
+            </Grid>
+          </Grid>
+        )}
+        { isSending && (
+          <Fade in={isSending}>
+            <LinearProgress sx={{ mt: 2 }} />
+          </Fade>
+        )}
+        { alert.error && (
+          <Zoom in={alert.error}>
+            <Alert severity="error" sx={{ mt: 2 }}>{ alert.message }</Alert>
+          </Zoom>
+        )}
+        { alert.success && (
+          <Zoom in={alert.success}>
+            <Alert severity="success" sx={{ mt: 2 }}>{ alert.message }</Alert>
+          </Zoom>
+        )}
       </Container>
     </ThemeProvider>
   );

@@ -19,31 +19,36 @@ server.post('/registration', (req, res) => {
   // ебаные условия какие то, нужно сократить
   if (isSameMail) {
     return res.status(200).jsonp({
-      serverValidation: false,
+      error: true,
+      success: false,
       message: 'Email is already exists',
     });
   }
   if (!email) {
     return res.status(400).jsonp({
-      serverValidation: false,
+      error: true,
+      success: false,
       message: 'Email is empty',
     });
   }
   if (!email.match(constants.correctEmail)) {
     return res.status(400).jsonp({
-      serverValidation: false,
+      error: true,
+      success: false,
       message: 'Incorrect email',
     });
   }
   if (!password) {
     return res.status(400).jsonp({
-      serverValidation: false,
+      error: true,
+      success: false,
       message: 'Password is empty',
     });
   }
   if (!password.match(constants.correctPassword)) {
     return res.status(400).jsonp({
-      serverValidation: false,
+      error: true,
+      success: false,
       message: 'Incorrec password',
     });
   }
@@ -55,7 +60,8 @@ server.post('/registration', (req, res) => {
 
   db.get('users').push(req.body).write();
   return res.status(200).jsonp({
-    serverValidation: true,
+    error: false,
+    success: true,
     message: 'Registration is successed',
   });
 });

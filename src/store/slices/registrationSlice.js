@@ -12,6 +12,7 @@ const initialState = {
     password: '',
   },
   notices: {
+    sending: false,
     email: {
       isError: false,
       text: '',
@@ -21,6 +22,11 @@ const initialState = {
       text: '',
     },
   },
+  alert: {
+    error: false,
+    success: false,
+    message: '',
+  },
 };
 
 export const newUser = createAsyncThunk(
@@ -29,11 +35,21 @@ export const newUser = createAsyncThunk(
     const response = await fakeApi.registration(data);
 
     // если валидация на сервере не прошла
-    if (!response.serverValidation) {
-      return rejectWithValue(response.message);
+    if (response.error) {
+      const error = {
+        error: response.error,
+        success: response.success,
+        message: response.message,
+      };
+      return rejectWithValue(error);
     }
 
-    return response.message;
+    const status = {
+      error: response.error,
+      success: response.success,
+      message: response.message,
+    };
+    return status;
   },
 );
 
@@ -50,16 +66,39 @@ const registrationSlice = createSlice({
     passwordNotice: (state, action) => {
       state.notices.password = action.payload;
     },
+    alertSuccess: (state) => {
+      state.alert.success = false;
+      state.alert.message = '';
+    },
+    alertError: (state) => {
+      state.alert.error = false;
+      state.alert.message = '';
+    },
   },
   extraReducers: {
-    [newUser.pending]: () => {
-      console.log('newUser pending');
+    [newUser.pending]: (state) => {
+      state.notices.sending = true;
+
+      state.alert.error = false;
+      state.alert.success = false;
+      state.alert.message = '';
     },
-    [newUser.fulfilled]: (_, action) => {
-      console.log('newUser fulfilled', action.payload);
+    [newUser.fulfilled]: (state, action) => {
+      state.notices.sending = false;
+
+      state.alert.error = false;
+      state.alert.success = true;
+      state.alert.message = action.payload.message;
+
+      state.values.email = '';
+      state.values.password = '';
     },
-    [newUser.rejected]: (_, action) => {
-      console.log('newUser rejected', action.payload);
+    [newUser.rejected]: (state, action) => {
+      state.notices.sending = false;
+
+      state.alert.error = true;
+      state.alert.success = false;
+      state.alert.message = action.payload.message;
     },
   },
 });
@@ -69,12 +108,16 @@ export const {
   saveValues,
   emailNotice,
   passwordNotice,
+  alertSuccess,
+  alertError,
 } = registrationSlice.actions;
 
 // selectors
 export const selectValues = (state) => state.registration.values;
 export const selectEmailNotice = (state) => state.registration.notices.email;
 export const selectPasswordNotice = (state) => state.registration.notices.password;
+export const selectSending = (state) => state.registration.notices.sending;
+export const selectAlert = (state) => state.registration.alert;
 
 // main reducer
 export default registrationSlice.reducer;
