@@ -3,8 +3,8 @@
 /* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
-import { createSlice } from '@reduxjs/toolkit';
-// import fakeApi from '../../fakeApi';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import fakeApi from '../../fakeApi';
 
 const initialState = {
   values: {
@@ -22,6 +22,17 @@ const initialState = {
     },
   },
 };
+
+export const newUser = createAsyncThunk(
+  'registration/newUser',
+  async (data, { rejectWithValue, dispatch, getState }) => {
+    const response = await fakeApi.registration(data);
+    const d = await response.json();
+    console.log(d);
+    console.log(response);
+  },
+);
+
 const registrationSlice = createSlice({
   name: 'registration',
   initialState,

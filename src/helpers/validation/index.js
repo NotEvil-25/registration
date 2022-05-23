@@ -7,7 +7,7 @@ function validataeEmail(value) {
 }
 
 function validatePassword(value) {
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{4,10}$)/;
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{4,20}$)/;
   if (value && regex.test(value)) {
     return true;
   }

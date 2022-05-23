@@ -21,8 +21,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "concurrently --kill-others \"npm run start\" \"npm run server\"",
+    "server": "nodemon ./fakeServer",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -50,11 +51,14 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^7.2.0",
     "eslint": "^8.13.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.4.0"
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "json-server": "^0.17.0",
+    "nodemon": "^2.0.16"
   }
 }

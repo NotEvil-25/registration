@@ -18,6 +18,7 @@ import {
   saveValues, selectValues,
   emailNotice, selectEmailNotice,
   passwordNotice, selectPasswordNotice,
+  newUser,
 } from '../store/slices/registrationSlice';
 import { validataeEmail, validatePassword } from '../helpers/validation';
 
@@ -52,21 +53,26 @@ function Registration() {
       if (!validatedEmail) {
         dispatch(emailNotice({ isError: true, text: 'Incorrect email' }));
         dispatch(passwordNotice({ isError: true, text: 'Incorrect password' }));
-      } else {
-        dispatch(emailNotice({ isError: false, text: '' }));
-        dispatch(passwordNotice({ isError: true, text: 'Incorrect password' }));
+        return;
       }
+      dispatch(emailNotice({ isError: false, text: '' }));
+      dispatch(passwordNotice({ isError: true, text: 'Incorrect password' }));
+      return;
     }
     if (!validatedEmail) {
       if (!validatedPassword) {
         dispatch(passwordNotice({ isError: true, text: 'Incorrect password' }));
         dispatch(emailNotice({ isError: true, text: 'Incorrect email' }));
-      } else {
-        dispatch(passwordNotice({ isError: false, text: '' }));
-        dispatch(emailNotice({ isError: true, text: 'Incorrect email' }));
+        return;
       }
+      dispatch(passwordNotice({ isError: false, text: '' }));
+      dispatch(emailNotice({ isError: true, text: 'Incorrect email' }));
+      return;
     }
     // добавить условие для третьего инпута (потвердить пароль)
+
+    const user = { email, password };
+    dispatch(newUser(user));
   };
 
   return (
