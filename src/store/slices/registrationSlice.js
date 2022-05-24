@@ -1,8 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-use-before-define */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import fakeApi from '../../fakeApi';
 
@@ -31,7 +26,7 @@ const initialState = {
 
 export const newUser = createAsyncThunk(
   'registration/newUser',
-  async (data, { rejectWithValue, dispatch, getState }) => {
+  async (data, { rejectWithValue }) => {
     const response = await fakeApi.registration(data);
 
     // если валидация на сервере не прошла

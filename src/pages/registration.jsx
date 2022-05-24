@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-console */
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -173,14 +171,14 @@ function Registration() {
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Fade in={!isSending}>
-                <Link href="#" variant="body2" component={LinkTo} to="/">
+                <Link variant="body2" component={LinkTo} to="/">
                   Go to home
                 </Link>
               </Fade>
             </Grid>
             <Grid item xs={6} textAlign="right">
               <Fade in={!isSending}>
-                <Link href="#" variant="body2" component={LinkTo} to="/login">
+                <Link variant="body2" component={LinkTo} to="/login">
                   Or login?
                 </Link>
               </Fade>

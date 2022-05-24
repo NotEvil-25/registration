@@ -1,6 +1,3 @@
-/* eslint-disable quote-props */
-/* eslint-disable max-len */
-/* eslint-disable no-console */
 const mainUrl = 'http://localhost:3001/';
 
 const endPoint = {

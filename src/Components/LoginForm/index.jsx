@@ -1,7 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-console */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -17,16 +14,13 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as LinkTo } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  loginUser, selectLoginHelpers, loginValues, selectLoginVals,
-} from '../../store/slices/sessionSlice';
 
 const theme = createTheme();
 
 function LoginForm() {
   const dispatch = useDispatch();
-  const status = useSelector(selectLoginHelpers);
-  const value = useSelector(selectLoginVals);
+  const status = useSelector(); // add
+  const value = useSelector(); // add
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,7 +29,6 @@ function LoginForm() {
       email: form.get('loginEmail'),
       password: form.get('loginPassword'),
     };
-    dispatch(loginUser(data));
   };
 
   const handleInputsValue = () => {
@@ -45,7 +38,6 @@ function LoginForm() {
       email: form.get('loginEmail'),
       password: form.get('loginPassword'),
     };
-    dispatch(loginValues(data));
   };
 
   return (
@@ -117,7 +109,7 @@ function LoginForm() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2" component={LinkTo} to="/">
+                  <Link variant="body2" component={LinkTo} to="/">
                     Go to home
                   </Link>
                 </Grid>
