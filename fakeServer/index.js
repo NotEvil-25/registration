@@ -11,11 +11,13 @@ server.db = router.db;
 server.use(jsonServer.bodyParser);
 
 server.post('/registration', (req, res) => {
+
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
   const { db } = req.app;
   const { password, email } = req.body;
   const isSameMail = db.get('users').find({ email }).value();
 
-  res.setHeader('Access-Control-Allow-Origin', '*');
   // ебаные условия какие то, нужно сократить
   if (isSameMail) {
     return res.status(200).jsonp({
@@ -70,12 +72,26 @@ server.post('/login', (req, res) => {
   const { db } = req.app;
   const { password, email } = req.body;
 
-  const isCorrectData = db.get('users').find({ email, password }).value();
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
-  if (isCorrectData) {
-    return res.status(200).jsonp({ successMessage: 'Login is successed' });
+  const user = db.get('users').find({ email, password }).value() || false;
+
+  if (user) {
+    return res.status(200).jsonp({
+      error: false,
+      success: true,
+      message: 'Login is successed',
+      userData: user,
+    });
   }
-  return res.status(400).jsonp({ errorMessage: 'Email or password arent correct' });
+
+  delete user.password;
+  return res.status(200).jsonp({
+    error: true,
+    success: false,
+    message: 'Email or password incorrect',
+    userData: null,
+  });
 });
 
 server.use(middlewares);

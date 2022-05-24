@@ -9,16 +9,24 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
+import LinearProgress from '@mui/material/LinearProgress';
+import Fade from '@mui/material/Fade';
+import Zoom from '@mui/material/Zoom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as LinkTo } from 'react-router-dom';
+import { Link as LinkTo, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { validataeEmail, validatePassword } from '../helpers/validation';
 import {
   saveValues, selectValues,
   emailNotice, passwordNotice,
   selectEmailNotice, selectPasswordNotice,
+  user, hideAlertSuccess, hideAlertError,
+  selectSending, selectAlert,
+  selectUserStatus,
+  selectDelayedAuth,
+  auth,
 } from '../store/slices/loginSlice';
 
 const theme = createTheme();
@@ -27,21 +35,25 @@ function Login() {
   const value = useSelector(selectValues);
   const emailStatus = useSelector(selectEmailNotice);
   const passwordStatus = useSelector(selectPasswordNotice);
+  const isSending = useSelector(selectSending);
+  const alert = useSelector(selectAlert);
+  // const userStatus = useSelector(selectUserStatus);
+  const delayedAuth = useSelector(selectDelayedAuth);
   const dispatch = useDispatch();
-
-  console.log(emailStatus);
-  console.log(passwordStatus);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(emailNotice({ isError: false, text: '' }));
-    dispatch(passwordNotice({ isError: false, text: '' }));
+
     const { login } = document.forms;
     const data = new FormData(login);
     const email = data.get('email');
     const password = data.get('password');
     const validatedPassword = validatePassword(password);
     const validatedEmail = validataeEmail(email);
+
+    dispatch(emailNotice({ isError: false, text: '' }));
+    dispatch(passwordNotice({ isError: false, text: '' }));
 
     if (!validatedPassword) {
       if (!validatedEmail) {
@@ -63,7 +75,11 @@ function Login() {
       dispatch(emailNotice({ isError: true, text: 'Incorrect email' }));
       return;
     }
-    console.log('correct');
+
+    if (alert.error) { dispatch(hideAlertError()); }
+    if (alert.success) { dispatch(hideAlertSuccess()); }
+
+    dispatch(user({ email, password }));
   };
 
   const handleInputs = () => {
@@ -87,6 +103,13 @@ function Login() {
     }
   };
 
+  if (delayedAuth && alert.success) {
+    setTimeout(() => {
+      dispatch(auth());
+      dispatch(hideAlertSuccess());
+      navigate('/');
+    }, 2000);
+  }
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
@@ -121,7 +144,10 @@ function Login() {
               Log in
             </Typography>
             <Box component="form" name="login" noValidate onSubmit={handleSubmit} onChange={handleInputs} sx={{ mt: 1 }}>
+              <p>mail@mail.com</p>
+              <p>blbYF[eq1488</p>
               <TextField
+                disabled={isSending}
                 value={value.email}
                 error={emailStatus.isError}
                 helperText={emailStatus.text}
@@ -135,6 +161,7 @@ function Login() {
                 onChange={handleNotice}
               />
               <TextField
+                disabled={isSending}
                 value={value.password}
                 error={passwordStatus.isError}
                 helperText={passwordStatus.text}
@@ -148,6 +175,7 @@ function Login() {
                 onChange={handleNotice}
               />
               <Button
+                disabled={isSending}
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -155,13 +183,32 @@ function Login() {
               >
                 Sign In
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link variant="body2" component={LinkTo} to="/">
-                    Go to home
-                  </Link>
+              { !isSending && (
+                <Grid container>
+                  <Grid item xs>
+                    <Fade in={!isSending}>
+                      <Link variant="body2" component={LinkTo} to="/">
+                        Go to home
+                      </Link>
+                    </Fade>
+                  </Grid>
                 </Grid>
-              </Grid>
+              )}
+              { isSending && (
+                <Fade in={isSending}>
+                  <LinearProgress sx={{ mt: 2 }} />
+                </Fade>
+              )}
+              { alert.error && (
+                <Zoom in={alert.error}>
+                  <Alert severity="error" sx={{ mt: 2 }}>{ alert.message }</Alert>
+                </Zoom>
+              )}
+              { alert.success && (
+                <Zoom in={alert.success}>
+                  <Alert severity="success" sx={{ mt: 2 }}>{ alert.message }</Alert>
+                </Zoom>
+              )}
             </Box>
           </Box>
         </Grid>
