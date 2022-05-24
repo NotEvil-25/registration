@@ -3,7 +3,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-// import Login from './pages/login';
+import Login from './pages/login';
 import Registration from './pages/registration';
 // import ResetPass from './pages/resetpass';
 import Home from './pages/home';
@@ -17,15 +17,11 @@ function App() {
         path="/registration"
         element={(<Registration />)}
       />
-      {/* <Route
-        path="/login"
-        element={(
-          <ForGuests>
-            <Login />
-          </ForGuests>
-        )}
-      />
       <Route
+        path="/login"
+        element={(<Login />)}
+      />
+      {/* <Route
         path="/resetpass"
         element={(
           <RequireAuth>

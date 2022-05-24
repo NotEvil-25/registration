@@ -46,6 +46,17 @@ function Registration() {
     dispatch(saveValues(currentValues));
   };
 
+  const handleNotice = (e) => {
+    const { name } = e.target;
+
+    if (name === 'password') {
+      dispatch(passwordNotice({ isError: false, text: '' }));
+    }
+    if (name === 'email') {
+      dispatch(emailNotice({ isError: false, text: '' }));
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(emailNotice({ isError: false, text: '' }));
@@ -127,6 +138,7 @@ function Registration() {
                   value={value.email}
                   error={emailStatus.isError}
                   helperText={emailStatus.text}
+                  onChange={handleNotice}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -142,6 +154,7 @@ function Registration() {
                   value={value.password}
                   error={passwordStatus.isError}
                   helperText={passwordStatus.text}
+                  onChange={handleNotice}
                 />
               </Grid>
               {/* <Grid item xs={12}>
