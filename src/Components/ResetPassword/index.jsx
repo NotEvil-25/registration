@@ -1,5 +1,5 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-console */
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -16,24 +16,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as LinkTo } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { validatePassword } from '../../helpers/validation';
-import {
-  resetPassword,
-  selectResetPassHelpers,
-  resetPassValues,
-  selectResetPassVals,
-} from '../../store/slices/sessionSlice';
 
 const theme = createTheme();
 
 function ResetPassword() {
   const dispatch = useDispatch();
-  const status = useSelector(selectResetPassHelpers);
-  const value = useSelector(selectResetPassVals);
-  const newPasswordErr = status.typeErr === 'NEW_PASSWORD';
-  const oldPasswordErr = status.typeErr === 'OLD_PASSWORD';
-  const [isDifferentVal, setDifferentVal] = useState(false);
-  const [helperText, setHelperText] = useState(null);
-  const [isPasswordErr, setPasswordErr] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -64,9 +51,7 @@ function ResetPassword() {
     const values = {
       old: data.get('oldPassword'),
       new: data.get('newPassword'),
-      repeated: data.get('repeatedPassword'),
     };
-    dispatch(resetPassValues(values));
   };
 
   return (
@@ -91,8 +76,6 @@ function ResetPassword() {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  value={value.old}
-                  error={oldPasswordErr}
                   required
                   fullWidth
                   name="oldPassword"
@@ -105,9 +88,6 @@ function ResetPassword() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  value={value.new}
-                  error={isPasswordErr || isDifferentVal || newPasswordErr}
-                  helperText={helperText}
                   required
                   fullWidth
                   name="newPassword"
@@ -118,11 +98,8 @@ function ResetPassword() {
                   onChange={handleInputs}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
-                  value={value.repeated}
-                  error={isPasswordErr || isDifferentVal || newPasswordErr}
-                  helperText={helperText}
                   required
                   fullWidth
                   name="repeatedPassword"
@@ -132,7 +109,7 @@ function ResetPassword() {
                   autoComplete="new-password"
                   onChange={handleInputs}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Button
               type="submit"
@@ -144,15 +121,11 @@ function ResetPassword() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2" component={LinkTo} to="/">
+                <Link variant="body2" component={LinkTo} to="/">
                   Go to home
                 </Link>
               </Grid>
             </Grid>
-            {status.isError
-              && <Alert severity="error">{status.message}</Alert>}
-            {isPasswordErr
-              && <Alert severity="error">Password must have at least capital letter, a number and length from 4 to 10!</Alert>}
           </Box>
         </Box>
       </Container>

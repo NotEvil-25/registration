@@ -1,16 +1,19 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-console */
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectAuth } from '../../store/slices/sessionSlice';
+import PropTypes from 'prop-types';
+import { selectAuth } from '../../store/slices/loginSlice';
 
 function ForGuests({ children }) {
   const auth = useSelector(selectAuth);
-  if (auth.isAuth) {
+  if (auth) {
     return (<Navigate to="/" />);
   }
   return children;
 }
+
+ForGuests.propTypes = {
+  children: PropTypes.element.isRequired,
+};
 
 export default ForGuests;
