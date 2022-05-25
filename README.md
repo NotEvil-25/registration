@@ -1,6 +1,8 @@
 # How to start
-**Note: local ports 3000 and 3001 should be free**
-`npm run dev`
+
+### `npm run dev`
+
+#### **Note: local ports `3000` and `3001` should be free**
 
 # Getting Started with Create React App
 
