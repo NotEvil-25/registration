@@ -139,6 +139,7 @@ export const selectSending = (state) => state.login.notices.sending;
 export const selectAlert = (state) => state.login.alert;
 export const selectUserStatus = (state) => state.login.user;
 export const selectDelayedAuth = (state) => state.login.delayedAuth;
+export const selectAuth = (state) => state.login.user.isAuth;
 
 // main reducer
 export default loginSlice.reducer;

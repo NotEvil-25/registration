@@ -1,13 +1,19 @@
-// import React from 'react';
-// import { Navigate } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import { selectAuth } from '../../store/slices/loginSlice';
 
-// function ForGuests({ children }) {
-//   const auth = useSelector(selectAuth);
-//   if (auth.isAuth) {
-//     return (<Navigate to="/" />);
-//   }
-//   return children;
-// }
+function ForGuests({ children }) {
+  const auth = useSelector(selectAuth);
+  if (auth) {
+    return (<Navigate to="/" />);
+  }
+  return children;
+}
 
-// export default ForGuests;
+ForGuests.propTypes = {
+  children: PropTypes.element.isRequired,
+};
+
+export default ForGuests;
